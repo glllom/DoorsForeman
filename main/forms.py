@@ -19,7 +19,7 @@ class DoorTypeForm(ModelForm):
         widgets = {'name': TextInput(attrs={'class': 'form-control', 'size': '30'}),
                    'height_calculation': TextInput(attrs={'size': '5', 'class': 'form-control'}),
                    'width_calculation': TextInput(attrs={'size': '5', 'class': 'form-control'}),
-                   'image': CustomClearableFileInput(attrs={'class': 'form-control'},),
+                   'image': CustomClearableFileInput(attrs={'class': 'form-control'}, ),
                    }
         error_messages = {
             'name': {'required': "שדה חובה", 'unique': "דלת עם שם כזה כבר קיימת במערכת"},
@@ -51,33 +51,6 @@ class HingesForm(ModelForm):
         }
 
 
-class EngravingForm(ModelForm):
-    class Meta:
-        model = EngravingType
-        fields = ['name', 'compatible_doors', 'image']
-        widgets = {'name': TextInput(attrs={'class': 'form-control', 'size': '20'}),
-                   'compatible_doors': SelectMultiple(attrs={'class': 'form-select'}),
-                   'image': CustomClearableFileInput(attrs={'class': 'form-control'})}
-        error_messages = {
-            'name': {'required': "שדה חובה", 'unique': "חריטה עם שם כזה כבר קיימת במערכת"},
-            'image': {'invalid_image': "קובץ תמונה שגוי"}
-        }
-
-
-class StructureForm(ModelForm):
-    class Meta:
-        model = Structure
-        fields = ['description', 'compatible_doors', 'compatible_engraving']
-        widgets = {'description': Textarea(attrs={'class': 'form-control', 'style': 'height: 100px;'}),
-                   'compatible_doors': SelectMultiple(attrs={'class': 'form-select'}),
-                   'compatible_engraving': SelectMultiple(attrs={'class': 'form-select'}),
-                   'image': ClearableFileInput(attrs={'class': 'form-control'})}
-        error_messages = {
-            'description': {'required': "שדה חובה", 'unique': "חריטה עם שם כזה כבר קיימת במערכת"},
-            'image': {'invalid_image': "קובץ תמונה שגוי"}
-        }
-
-
 class OrderForm(ModelForm):
     class Meta:
         model = Order
@@ -87,7 +60,7 @@ class OrderForm(ModelForm):
                    'customer': TextInput(attrs={'class': 'form-control', 'size': '15'}),
                    'phone': TextInput(attrs={'class': 'form-control', 'size': '15'}),
                    'address': TextInput(attrs={'class': 'form-control', 'size': '15'}),
-                   'door_type': Select(attrs={'class': 'form-select',}),
+                   'door_type': Select(attrs={'class': 'form-select', }),
                    'lock': Select(attrs={'class': 'form-select'}),
                    'hinges': Select(attrs={'class': 'form-select'}),
                    'engraving': Select(attrs={'class': 'form-select'}),
@@ -95,12 +68,12 @@ class OrderForm(ModelForm):
                    'casing': Select(attrs={'class': 'form-select'}),
                    'comment': Textarea(attrs={'class': 'form-control', 'style': 'height: 125px;'}),
                    }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['lock'].queryset = Lock.objects.none()
-        self.fields['hinges'].queryset = Hinge.objects.none()
-        self.fields['engraving'].queryset = EngravingType.objects.none()
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['lock'].queryset = Lock.objects.none()
+    #     self.fields['hinges'].queryset = Hinge.objects.none()
+    #
 
 
 class DoorsGroupInstanceForm(ModelForm):
@@ -111,7 +84,6 @@ class DoorsGroupInstanceForm(ModelForm):
         widgets = {'door_type': Select(attrs={'class': 'form-select'}),
                    'lock': Select(attrs={'class': 'form-select'}),
                    'hinges': Select(attrs={'class': 'form-select'}),
-                   'engraving': Select(attrs={'class': 'form-select'}),
                    }
 
 
@@ -123,7 +95,6 @@ class DoorInstanceForm(ModelForm):
         widgets = {'quantity': TextInput(attrs={'class': 'form-control px-1 rounded-0'}),
                    'width': TextInput(attrs={'class': 'form-control px-1 rounded-0'}),
                    'height': TextInput(attrs={'class': 'form-control px-1 rounded-0'}),
-                   'frame': TextInput(attrs={'class': 'form-control px-1 rounded-0'}),
                    'comment': TextInput(attrs={'class': 'form-control px-2 rounded-0'}),
                    'direction': Select(attrs={'class': 'form-select ps-1 rounded-0'}),
                    }

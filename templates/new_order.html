@@ -4,24 +4,28 @@
     <form action="" method="post" id="order_form" data-locks-url="{% url 'ajax_load_locks' %}" novalidate>
         {% csrf_token %}
         <div class="container">
+            <div class="col-3 d-flex justify-content-start">
+                <label for="id_id" class="text-nowrap ms-4">{{ form.id.label }}:</label>
+                {{ form.id }}
+            </div>
             <div class="row my-1">
-                <div class="col-3 d-flex justify-content-start">
-                    <label for="id_id" class="text-nowrap ms-4">{{ form.id.label }}:</label>
-                    {{ form.id }}
-                </div>
                 <div class="col-4 d-flex justify-content-start">
                     <label for="id_customer" class="text-nowrap ms-4">{{ form.customer.label }}:</label>
                     {{ form.customer }}
+                </div>
+                <div class="col-4 d-flex justify-content-start">
+                    <label for="id_customer" class="text-nowrap ms-4">{{ form.phone.label }}:</label>
+                    {{ form.phone }}
+                </div>
+                <div class="col-4 d-flex justify-content-start">
+                    <label for="id_customer" class="text-nowrap ms-4">{{ form.address.label }}:</label>
+                    {{ form.address }}
                 </div>
             </div>
             <div class="row my-1">
                 <div class="col-4 d-flex justify-content-start">
                     <label for="id_id" class="text-nowrap ms-4">{{ form.door_type.label }}:</label>
                     {{ form.door_type }}
-                </div>
-                <div class="col-4 d-flex justify-content-start">
-                    <label for="id_id" class="text-nowrap ms-4">{{ form.engraving.label }}:</label>
-                    {{ form.engraving }}
                 </div>
             </div>
             <div class="row">
@@ -33,10 +37,6 @@
                     <div class="d-flex justify-content-start my-1">
                         <label for="id_id" class="text-nowrap ms-4">{{ form.hinges.label }}:</label>
                         {{ form.hinges }}
-                    </div>
-                    <div class="d-flex justify-content-start my-1">
-                        <label for="id_casing" class="text-nowrap ms-4">{{ form.casing.label }}:</label>
-                        {{ form.casing }}
                     </div>
                 </div>
                 <div class="col-5 d-flex justify-content-start my-1">

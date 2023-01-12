@@ -8,7 +8,6 @@ from main.calculator import *
 
 
 def index(request):
-    """temp"""
     return render(request, 'index.html')
 
 
@@ -105,66 +104,6 @@ def remove_hinge(request, hinge_id):
     return redirect('hinges')
 
 
-"""Engravings"""
-
-
-def engravings(request):
-    form = EngravingForm()
-    form_error = None
-    all_engravings = EngravingType.objects.all()
-    if request.method == 'POST':
-        form = EngravingForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-        else:
-            form_error = True
-    return render(request, 'engraving.html', {'form': form,
-                                              'engravings': all_engravings,
-                                              'form_error': form_error})
-
-
-class EngravingUpdate(UpdateView):
-    model = EngravingType
-    form_class = EngravingForm
-    template_name = 'update_engraving.html'
-    success_url = reverse_lazy('engravings')
-
-
-def remove_engraving(request, engraving_id):
-    EngravingType.objects.filter(id=engraving_id).delete()
-    return redirect('engravings')
-
-
-"""Structure"""
-
-
-def structure(request):
-    form = StructureForm()
-    form_error = None
-    all_structures = Structure.objects.all()
-    if request.method == 'POST':
-        form = StructureForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-        else:
-            form_error = True
-    return render(request, 'structure.html', {'form': form,
-                                              'structures': all_structures,
-                                              'form_error': form_error})
-
-
-class StructureUpdate(UpdateView):
-    model = Structure
-    form_class = StructureForm
-    template_name = 'update_structure.html'
-    success_url = reverse_lazy('structure')
-
-
-def remove_structure(request, structure_id):
-    Structure.objects.filter(id=structure_id).delete()
-    return redirect('structure')
-
-
 '''Orders'''
 
 
@@ -176,7 +115,7 @@ def new_order(request):
         if form.is_valid():
             form.save()
             order = Order.objects.filter(id=request.POST['id'])[0]
-            doors_group = DoorsGroupInstance(order=order, door_type=order.door_type, engraving=order.engraving,
+            doors_group = DoorsGroupInstance(order=order, door_type=order.door_type,
                                              lock=order.lock, hinges=order.hinges)
             doors_group.save()
             return redirect(show_order, order_id=order.id)
@@ -239,8 +178,7 @@ def add_doors(request, order_id):
             form.save()
         return redirect('add_doors', order_id=order_id)
     else:
-        return render(request, 'order.html', {'engravings': EngravingType.objects.all(),
-                                              'door_types': DoorType.objects.all(),
+        return render(request, 'order.html', {'door_types': DoorType.objects.all(),
                                               'locks': Lock.objects.all(), 'hinges': Hinge.objects.all(),
                                               'doors': doors, 'form': form, 'form_error': form_error})
 
@@ -260,7 +198,6 @@ def report(request, order_id):
     doors = DoorInstance.objects.filter(order=order)
     doors_list = []
     panels_list = []
-    structure2 = Structure.objects.filter(compatible_doors=order.door_type, compatible_engraving=order.engraving)[0]
 
     for door in doors:
         new_door = {'frame': door.frame.normalize(),
@@ -297,8 +234,7 @@ def report(request, order_id):
             panels_list.append(new_door)
     return render(request, 'report.html', {'order': order,
                                            'doors': doors_list,
-                                           'panels': panels_list,
-                                           'structure2': structure2})
+                                           'panels': panels_list,})
 
 
 """AJAX"""
@@ -316,10 +252,3 @@ def load_hinges(request):
     door_type = DoorType.objects.filter(id=door_type)[0]
     hinges_list = Hinge.objects.filter(compatible_doors=door_type)
     return render(request, 'hinges_dropdown_list_options.html', {'hinges': hinges_list})
-
-
-def load_engraving(request):
-    door_type = request.GET.get('door_type')
-    door_type = DoorType.objects.filter(id=door_type)[0]
-    engravings_list = EngravingType.objects.filter(compatible_doors=door_type)
-    return render(request, 'engraving_dropdown_list_options.html', {'engravings': engravings_list})

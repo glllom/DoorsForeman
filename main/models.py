@@ -18,6 +18,26 @@ class DoorType(models.Model):
                                             verbose_name="הפחתה ברוחב:", null=False, default=0,
                                             validators=[MaxValueValidator(0)])
 
+    covering_out_height_calculation = models.DecimalField(max_digits=4, decimal_places=1, help_text="הפחתה בגובה",
+                                                          verbose_name="הפחתה בגובה:", null=False, default=0,
+                                                          validators=[MaxValueValidator(0)])
+
+    covering_out_width_calculation = models.DecimalField(max_digits=4, decimal_places=1, help_text="הפחתה ברוחב",
+                                                         verbose_name="הפחתה ברוחב:", null=False, default=0,
+                                                         validators=[MaxValueValidator(0)])
+
+    covering_into_height_calculation = models.DecimalField(max_digits=4, decimal_places=1, help_text="הפחתה בגובה",
+                                                           verbose_name="הפחתה בגובה:", null=False, default=0,
+                                                           validators=[MaxValueValidator(0)])
+
+    covering_into_width_calculation = models.DecimalField(max_digits=4, decimal_places=1, help_text="הפחתה ברוחב",
+                                                          verbose_name="הפחתה ברוחב:", null=False, default=0,
+                                                          validators=[MaxValueValidator(0)])
+
+    binder_calculation = models.DecimalField(max_digits=4, decimal_places=1, help_text="הפחתה ברוחב",
+                                             verbose_name="הפחתה ברוחב:", null=False, default=0,
+                                             validators=[MaxValueValidator(0)])
+
     def __str__(self):
         return self.name
 
@@ -27,6 +47,7 @@ class Lock(models.Model):
                             verbose_name="סוג המנעול:")
     compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות",
                                               verbose_name="סוגי דלתות תואמים:", blank=True)
+    index = models.CharField(max_length=16)
 
     def __str__(self):
         return self.name
@@ -37,35 +58,30 @@ class Hinge(models.Model):
                             verbose_name="", unique=True)
     compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות",
                                               verbose_name="סוגי דלתות תואמים:", blank=True)
+    index = models.CharField(max_length=16)
 
     def __str__(self):
         return self.name
 
 
-class EngravingType(models.Model):
-    name = models.CharField(max_length=16, help_text="", unique=True,
-                            verbose_name="דוגמת החריטה")
+class Accessories(models.Model):
+    name = models.CharField(max_length=16, help_text="",
+                            verbose_name="", unique=True)
+    compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות",
+                                              verbose_name="סוגי דלתות תואמים:", blank=True)
+    index = models.CharField(max_length=16)
+
+    def __str__(self):
+        return self.name
+
+
+class Covering(models.Model):
+    name = models.CharField(max_length=32)
     compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות",
                                               verbose_name="סוגי דלתות תואמים:", blank=True)
 
-    image = models.ImageField(upload_to='images/engraving_types', default='',
-                              help_text="תמונת החריטה", verbose_name="תמונת החריטה:")
-
     def __str__(self):
         return self.name
-
-
-class Structure(models.Model):
-    description = models.TextField(max_length="100", help_text="", verbose_name="תיאור המבנה:")
-    compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות", blank=True,
-                                              verbose_name="סוגי דלתות תואמים:")
-    compatible_engraving = models.ManyToManyField('EngravingType', help_text="", blank=True,
-                                                  verbose_name="סוגי דלתות תואמים:")
-    image = models.ImageField(upload_to='images/structure',
-                              help_text="תמונה", verbose_name="תמונה", blank=True)
-
-    def __str__(self):
-        return self.description
 
 
 class Order(models.Model):
@@ -78,14 +94,9 @@ class Order(models.Model):
     address = models.CharField(max_length=64, help_text="",
                                verbose_name="כתובת", blank=True)
     date = models.DateField(default=timezone.now)
-    casing = models.CharField(max_length=10, choices=(('regular', 'רגילות'), ('adjustable', 'מתכוונן')),
-                              verbose_name="הלבשות",
-                              help_text="")
     comment = models.TextField(max_length="100", help_text="", verbose_name="הערות", blank=True)
     door_type = models.ForeignKey('DoorType', on_delete=models.CASCADE,
                                   help_text="", verbose_name="סוג הדלתות")
-    engraving = models.ForeignKey('EngravingType', on_delete=models.CASCADE,
-                                  help_text="", verbose_name="דוגמא")
     lock = models.ForeignKey('Lock', on_delete=models.CASCADE,
                              help_text="", verbose_name="מנעול")
     hinges = models.ForeignKey('Hinge', on_delete=models.CASCADE,
@@ -100,8 +111,7 @@ class DoorsGroupInstance(models.Model):
                               verbose_name="")
     door_type = models.ForeignKey('DoorType', on_delete=models.CASCADE,
                                   help_text="", verbose_name="סוג הדלתות")
-    engraving = models.ForeignKey('EngravingType', on_delete=models.CASCADE,
-                                  help_text="", verbose_name="דוגמא")
+
     lock = models.ForeignKey('Lock', on_delete=models.CASCADE,
                              help_text="", verbose_name="מנעול")
     hinges = models.ForeignKey('Hinge', on_delete=models.CASCADE,
@@ -116,8 +126,6 @@ class DoorInstance(models.Model):
                                  help_text="")
     width = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="רוחב",
                                 help_text="")
-    frame = models.DecimalField(max_digits=3, decimal_places=1, verbose_name="משקוף", default='10',
-                                help_text="", blank=True)
     direction = models.CharField(max_length=4, choices=(('R', 'R'), ('L', 'L')),
                                  verbose_name="כיוון",
                                  help_text="")
@@ -125,7 +133,7 @@ class DoorInstance(models.Model):
 
     def __str__(self):
         return f"{self.group.order.id}_{self.number}, |{self.width}x{self.height}/" \
-               f"{self.frame} {self.direction}    {self.group.door_type.name},"
+               f"{self.direction}    {self.group.door_type.name},"
 
     class Meta:
         ordering = ["number"]
