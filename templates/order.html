@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}הזמנה {{ doors.id }}{% endblock %}
+{% block page %}
+    {% with main_group=groups|first %}
+        <div class="d-flex">
+            <h4 class="mx-2">הזמנה: {{ main_group.order.id }}</h4>
+            <h4 class="mx-2">לקוח: {{ main_group.order.customer }}</h4>
+        </div>
+    {% endwith %}
+    {% for group in groups %}
+        <div class="row g-0 m-0 p-0">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-3">
+                    <p class="">מנעול:</p>
+                </div>
+                <div class="col-7">
+                    <p class="pe-2 text-bg-warning rounded-1 bg-opacity-25">{{ group.lock.name }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="">צירים:</p>
+                </div>
+                <div class="col-7">
+                    <p class="pe-2 text-bg-warning rounded-1 bg-opacity-25">{{ group.hinges.name }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="">סוג הדלתות:</p>
+                </div>
+                <div class="col-7">
+                    <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.door_type.name }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="">דוגמא:</p>
+                </div>
+                <div class="col-7">
+                    <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.engraving.name }}</p>
+                </div>
+            </div>
+
+        </div>
+
+<div class="col-6">
+    <img src="{{ group.engraving.image.url }}" alt=".."
+         style="max-width: 150px; max-height: 250px;" class="draw">
+</div>
+</div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">רוחב</th>
+            <th scope="col">גובה</th>
+            <th scope="col">משקוף</th>
+            <th scope="col">כיוון</th>
+            <th class="ms-1" scope="col">כמות</th>
+            <th scope="col">הערות</th>
+        </tr>
+        </thead>
+        <tbody id="doors_table_id">
+        {% for door in doors %}
+            {% if door.group == group %}
+            <tr class="">
+                <th class="pe-2 p-0 fs-4" style="width: 3%" scope="row">{{ door.number }}</th>
+                <td class="p-0" style="width: 5%">{{ door.width }}</td>
+                <td class="p-0" style="width: 6%">{{ door.height }}</td>
+                <td class="p-0" style="width: 5%">{{ door.frame }}</td>
+                <td class="p-0" style="width: 5%">{{ door.direction }}</td>
+                <td class="p-0 pe-1 " style="width: 5%"> {{ door.quantity }}</td>
+                <td class="p-0">{{ door.comment }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endfor %}
+    <form action="" method="post" class="">
+        {% csrf_token %}
+        <div class="row g-0">
+            <div class="col-2">{{ form.width.label }}{{ form.width }}</div>
+            <div class="col-2">{{ form.height.label }}{{ form.height }}</div>
+            <div class="col-2">{{ form.frame.label }}{{ form.frame }}</div>
+            <div class="col-1">{{ form.direction.label }}{{ form.direction }}</div>
+            <div class="col-1">{{ form.quantity.label }}{{ form.quantity }}</div>
+            <div class="col-4">{{ form.comment.label }}{{ form.comment }}</div>
+        </div>
+
+        <div class="container d-flex m-2">
+            <button type="submit" class="btn btn-outline-primary m-2" id="copy_door_btn">להוסיף דלדת</button>
+            <button type="button" class="btn btn-outline-primary m-2" id="add_other_door_btn" data-bs-toggle="modal"
+                    data-bs-target="#new_door_form">להוסיף דלת אחרת
+            </button>
+            <button type="submit" class="btn btn-outline-success m-2">לשמור</button>
+        </div>
+    </form>
+    <!-- Modal -->
+    <div class="modal fade" id="new_door_form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url "add_door_group" order_id=groups.first.order.id %}" method="post"
+                          enctype="multipart/form-data" class="">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-4">{{ form_group.door_type.label }}</div>
+                            <div class="col-7">{{ form_group.door_type }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">{{ form_group.engraving.label }}</div>
+                            <div class="col-7">{{ form_group.engraving }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">{{ form_group.lock.label }}</div>
+                            <div class="col-7">{{ form_group.lock }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">{{ form_group.hinges.label }}</div>
+                            <div class="col-7">{{ form_group.hinges }}</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">לבטל
+                            </button>
+                            <button type="submit" class="btn btn-outline-primary" id="new_doors_group_btn">
+                                להוסיף דלת
+                            </button>
+                        </div>
+                    </form>
+                    {#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+{% load static %}
+<script src="{% static 'js/filters.js' %}"></script>
+{% endblock %}

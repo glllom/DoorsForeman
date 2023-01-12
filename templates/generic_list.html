@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}סוגי דלתות{% endblock %}
+{% block page %}
+    <button class="btn btn-outline-primary m-2" type="button" data-bs-toggle="collapse"
+            data-bs-target="#new_item_form" aria-expanded="false" aria-controls="new_item_form">
+        חדש
+    </button>
+    <div class="collapse {% if form_error %}{{ "show" }}{% endif %}" id="new_item_form">
+        {% block form %}{% endblock %}
+    </div>
+    <div class="col-3 mx-2">
+        <label for="filter" hidden></label>
+        <input type="text" class="form-control filter m-0 mt-4" id="filter"
+               placeholder="{% block filter_placeholder %}{% endblock %}">
+    </div>
+    <div class="container scroll">
+        {% block table %}
+        {% endblock %}
+    </div>
+{% endblock %}

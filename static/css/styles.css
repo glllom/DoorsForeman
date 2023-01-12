@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: block;
+}
+
+aside {
+    width: 15rem;
+}
+
+.page {
+    background-color: whitesmoke;
+    overflow: auto;
+}
+
+.btn {
+    z-index: 10;
+}
+
+.link {
+    transition: margin-right 0.2s;
+}
+
+.link:hover {
+    margin-right: 5px;
+}
+
+.draw {
+    transition: all 0.3s;
+}
+
+.draw:hover {
+    scale: 200%;
+    margin-top: 50px;
+
+}
+
+.errorlist{
+    color: firebrick;
+}
+

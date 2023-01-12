@@ -1,0 +1,95 @@
+{% extends 'generic_list.html' %}
+{% block title %}סוגי המבנה{% endblock %}
+{% block form %}
+    <form action="" method="post" enctype="multipart/form-data" class="card mx-2">
+        {% csrf_token %}
+        <div class="row align-right">
+            <div class="container m-2">
+                <div class="row justify-content-start my-1">
+                    <div class="col-2">
+                        {{ form.description.label }}
+                        {{ form.description.errors }}
+                    </div>
+                    <div class="col-4 p-0">{{ form.description }}</div>
+
+                </div>
+                <div class="row justify-content-start my-1">
+                    <div class="col-2">{{ form.compatible_doors.label }}</div>
+                    <div class="col-3 p-0">{{ form.compatible_doors }}</div>
+                    <div class="col-2">{{ form.compatible_engraving.label }}</div>
+                    <div class="col-3 p-0">{{ form.compatible_engraving }}</div>
+                </div>
+                <div class="row m-2">
+                    <button type="submit" class="col-auto btn btn-outline-success">לשמור</button>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="my-2">{{ form.image.label }}</div>
+                <div class="my-2">{{ form.image }}</div>
+                {{ form.image.errors }}
+            </div>
+            <div class="col-3">
+                <img src="#" alt="" id="preview"
+                     class="" style="max-height: 250px; max-width: 150px;">
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block filter_placeholder %}שם המבנה{% endblock %}
+
+{% block table %}
+    <div class="row border-bottom border-dark border-2">
+        <div class="col-3 pb-1 fw-bold lh-lg mx-1">תיאור המבנה</div>
+        <div class="col-3 pb-1 fw-bold lh-lg mx-1">דלתות תואמות</div>
+        <div class="col-3 pb-1 fw-bold lh-lg mx-1">חריטות תואמות</div>
+    </div>
+    {% load static %}
+    {% for structure in structures %}
+        <div>
+            <div data-bs-toggle="collapse"
+                 data-bs-target="#record_{{ structure.id }}"
+                 aria-expanded="true" aria-controls="record_{{ structure.id }}" style="z-index: -1;"
+                 class="row table-row border-top border-black-50 border-1 tr">
+                <div class="col-3 pb-1 fw-bold lh-lg m-1">{{ structure.description }}</div>
+                <div class="col-3 pb-1 lh-lg m-1">
+                    {% for door in structure.compatible_doors.all %}
+                        {% if forloop.counter0 > 0 %}
+                            <span>, </span>
+                        {% endif %}
+                        {{ door.name }}
+                    {% endfor %}
+                </div>
+                <div class="col-3 pb-1 lh-lg m-1">
+                    {% for engraving in structure.compatible_engraving.all %}
+                        {% if forloop.counter0 > 0 %}
+                            <span>, </span>
+                        {% endif %}
+                        {{ engraving.name }}
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="collapse container" id="record_{{ structure.id }}">
+                <div class="d-flex">
+                    <div class="">
+                        <a href="{% url 'structure' %}/{{ structure.id }}" class="btn btn-outline-dark m-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                <path fill-rule="evenodd"
+                                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                            </svg>
+                            שינוי
+                        </a>
+                    </div>
+                    <div class="">
+                        <a href="{% url 'structure_remove' structure_id=structure.id %}"
+                           class="btn btn-outline-danger m-2">להסיר</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endfor %}
+{% endblock %}
