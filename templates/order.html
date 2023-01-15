@@ -36,9 +36,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-3">
-                    <p class="">דוגמא:</p>
-                </div>
                 <div class="col-7">
                     <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.engraving.name }}</p>
                 </div>
@@ -58,7 +55,6 @@
             <th scope="col">#</th>
             <th scope="col">רוחב</th>
             <th scope="col">גובה</th>
-            <th scope="col">משקוף</th>
             <th scope="col">כיוון</th>
             <th class="ms-1" scope="col">כמות</th>
             <th scope="col">הערות</th>
@@ -87,8 +83,7 @@
         <div class="row g-0">
             <div class="col-2">{{ form.width.label }}{{ form.width }}</div>
             <div class="col-2">{{ form.height.label }}{{ form.height }}</div>
-            <div class="col-2">{{ form.frame.label }}{{ form.frame }}</div>
-            <div class="col-1">{{ form.direction.label }}{{ form.direction }}</div>
+            <div class="col-2">{{ form.direction.label }}{{ form.direction }}</div>
             <div class="col-1">{{ form.quantity.label }}{{ form.quantity }}</div>
             <div class="col-4">{{ form.comment.label }}{{ form.comment }}</div>
         </div>
@@ -118,10 +113,6 @@
                             <div class="col-7">{{ form_group.door_type }}</div>
                         </div>
                         <div class="row">
-                            <div class="col-4">{{ form_group.engraving.label }}</div>
-                            <div class="col-7">{{ form_group.engraving }}</div>
-                        </div>
-                        <div class="row">
                             <div class="col-4">{{ form_group.lock.label }}</div>
                             <div class="col-7">{{ form_group.lock }}</div>
                         </div>
@@ -137,7 +128,6 @@
                             </button>
                         </div>
                     </form>
-                    {#                    </div>#}
                 </div>
             </div>
         </div>

@@ -75,15 +75,6 @@ class Accessories(models.Model):
         return self.name
 
 
-class Covering(models.Model):
-    name = models.CharField(max_length=32)
-    compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות",
-                                              verbose_name="סוגי דלתות תואמים:", blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Order(models.Model):
     id = models.IntegerField(verbose_name="מספר הזמנה", primary_key=True,
                              unique=True, help_text="")
@@ -118,6 +109,12 @@ class DoorsGroupInstance(models.Model):
                                help_text="", verbose_name="צירים")
 
 
+DIRECTION = [
+    ('0', 'ימינה פנימה'),
+    ('1', 'שמאלה פנימה'),
+    ('2', 'ימינה החוצה'),
+    ('3', 'שמאלה החוצה'),
+]
 class DoorInstance(models.Model):
     group = models.ForeignKey('DoorsGroupInstance', on_delete=models.CASCADE)
     number = models.IntegerField(default=1)
@@ -126,7 +123,7 @@ class DoorInstance(models.Model):
                                  help_text="")
     width = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="רוחב",
                                 help_text="")
-    direction = models.CharField(max_length=4, choices=(('R', 'R'), ('L', 'L')),
+    direction = models.CharField(max_length=2, choices=DIRECTION,
                                  verbose_name="כיוון",
                                  help_text="")
     comment = models.TextField(max_length="1000", help_text="הערות", verbose_name="הערות", blank=True)
