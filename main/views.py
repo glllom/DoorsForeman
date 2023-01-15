@@ -190,6 +190,13 @@ def search_order(request):
         return redirect('index', request)
 
 
+def remove_door_instance(request, instance_id):
+    instance = DoorInstance.objects.get(id=instance_id)
+    order = instance.group.order.id
+    instance.delete()
+    return redirect('show_order', order_id=order)
+
+
 '''Reports'''
 
 
@@ -234,7 +241,7 @@ def report(request, order_id):
             panels_list.append(new_door)
     return render(request, 'report.html', {'order': order,
                                            'doors': doors_list,
-                                           'panels': panels_list,})
+                                           'panels': panels_list, })
 
 
 """AJAX"""

@@ -25,6 +25,8 @@ urlpatterns = [
     re_path(r'^search_order', main.views.search_order, name='search_order'),
     re_path(r'^add_door_group/(?P<order_id>\d+)/', main.views.add_door_group, name='add_door_group'),
 
+    re_path(r'^remove_door_instance/(?P<instance_id>\d+)/', main.views.remove_door_instance, name='remove_door_instance'),
+
     path('ajax/load-locks', main.views.load_locks, name='ajax_load_locks'),
     path('ajax/load-hinges', main.views.load_hinges, name='ajax_load_hinges'),
 ]

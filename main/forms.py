@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, ClearableFileInput, SelectMultiple, Select, Textarea
+from django.forms import ModelForm, TextInput, ClearableFileInput, SelectMultiple, Select, Textarea, CheckboxInput
 
 from main.models import *
 
@@ -97,4 +97,6 @@ class DoorInstanceForm(ModelForm):
                    'height': TextInput(attrs={'class': 'form-control px-1 rounded-0'}),
                    'comment': TextInput(attrs={'class': 'form-control px-2 rounded-0'}),
                    'direction': Select(attrs={'class': 'form-select ps-1 rounded-0'}),
+                   'mezuzah': CheckboxInput(attrs={'class': 'form-check-input px-1', 'role': "switch"}),
+                   'closer': CheckboxInput(attrs={'class': 'form-check-input px-1', 'role': "switch"}),
                    }

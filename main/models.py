@@ -110,11 +110,13 @@ class DoorsGroupInstance(models.Model):
 
 
 DIRECTION = [
-    ('0', 'ימינה פנימה'),
-    ('1', 'שמאלה פנימה'),
-    ('2', 'ימינה החוצה'),
-    ('3', 'שמאלה החוצה'),
+    ('ימינה פנימה', 'ימינה פנימה'),
+    ('שמאלה פנימה', 'שמאלה פנימה'),
+    ('ימינה החוצה', 'ימינה החוצה'),
+    ('שמאלה החוצה', 'שמאלה החוצה'),
 ]
+
+
 class DoorInstance(models.Model):
     group = models.ForeignKey('DoorsGroupInstance', on_delete=models.CASCADE)
     number = models.IntegerField(default=1)
@@ -123,9 +125,11 @@ class DoorInstance(models.Model):
                                  help_text="")
     width = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="רוחב",
                                 help_text="")
-    direction = models.CharField(max_length=2, choices=DIRECTION,
+    direction = models.CharField(max_length=16, choices=DIRECTION,
                                  verbose_name="כיוון",
                                  help_text="")
+    mezuzah = models.BooleanField(verbose_name="מזוזה", default=False)
+    closer = models.BooleanField(verbose_name="מחזיר שמן", default=False)
     comment = models.TextField(max_length="1000", help_text="הערות", verbose_name="הערות", blank=True)
 
     def __str__(self):

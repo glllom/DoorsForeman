@@ -10,80 +10,98 @@
     {% endwith %}
     {% for group in groups %}
         <div class="row g-0 m-0 p-0">
-        <div class="col-6">
-            <div class="row">
-                <div class="col-3">
-                    <p class="">מנעול:</p>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3">
+                        <p class="">מנעול:</p>
+                    </div>
+                    <div class="col-7">
+                        <p class="pe-2 text-bg-warning rounded-1 bg-opacity-25">{{ group.lock.name }}</p>
+                    </div>
                 </div>
-                <div class="col-7">
-                    <p class="pe-2 text-bg-warning rounded-1 bg-opacity-25">{{ group.lock.name }}</p>
+                <div class="row">
+                    <div class="col-3">
+                        <p class="">צירים:</p>
+                    </div>
+                    <div class="col-7">
+                        <p class="pe-2 text-bg-warning rounded-1 bg-opacity-25">{{ group.hinges.name }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="">צירים:</p>
+                <div class="row">
+                    <div class="col-3">
+                        <p class="">סוג הדלתות:</p>
+                    </div>
+                    <div class="col-7">
+                        <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.door_type.name }}</p>
+                    </div>
                 </div>
-                <div class="col-7">
-                    <p class="pe-2 text-bg-warning rounded-1 bg-opacity-25">{{ group.hinges.name }}</p>
+                <div class="row">
+                    <div class="col-7">
+                        <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.engraving.name }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="">סוג הדלתות:</p>
-                </div>
-                <div class="col-7">
-                    <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.door_type.name }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-7">
-                    <p class="px-1 text-bg-success text-dark rounded-1 bg-opacity-25">{{ group.engraving.name }}</p>
-                </div>
+
             </div>
 
+            <div class="col-6">
+                <img src="{{ group.door_type.image.url }}" alt=".."
+                     style="max-width: 150px; max-height: 250px;" class="draw">
+            </div>
         </div>
 
-<div class="col-6">
-    <img src="{{ group.engraving.image.url }}" alt=".."
-         style="max-width: 150px; max-height: 250px;" class="draw">
-</div>
-</div>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">רוחב</th>
-            <th scope="col">גובה</th>
-            <th scope="col">כיוון</th>
-            <th class="ms-1" scope="col">כמות</th>
-            <th scope="col">הערות</th>
-        </tr>
-        </thead>
-        <tbody id="doors_table_id">
-        {% for door in doors %}
-            {% if door.group == group %}
-            <tr class="">
-                <th class="pe-2 p-0 fs-4" style="width: 3%" scope="row">{{ door.number }}</th>
-                <td class="p-0" style="width: 5%">{{ door.width }}</td>
-                <td class="p-0" style="width: 6%">{{ door.height }}</td>
-                <td class="p-0" style="width: 5%">{{ door.frame }}</td>
-                <td class="p-0" style="width: 5%">{{ door.direction }}</td>
-                <td class="p-0 pe-1 " style="width: 5%"> {{ door.quantity }}</td>
-                <td class="p-0">{{ door.comment }}</td>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" style="width: 15%">מידות</th>
+                <th scope="col" style="width: 15%">כיוון</th>
+                <th class="text-center" scope="col" style="width: 8%">מזוזה</th>
+                <th scope="col" style="width: 8%">מחזיר שמן</th>
+                <th class="col" scope="col" style="width: 8%">כמות</th>
+                <th scope="col">הערות</th>
             </tr>
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="doors_table_id">
+            {% for door in doors %}
+                {% if door.group == group %}
+                    <tr class="fs-5">
+                        <th class="pe-2 p-0" style="width: 3%" scope="row">{{ door.number }}</th>
+                        <td class="p-0" style="width: 15%" dir="rtl">{{ door.height }}x{{ door.width }}</td>
+                        <td class="p-0" style="width: 15%">{{ door.direction }}</td>
+                        <td class="p-0 text-center" style="width: 8%">{{ door.mezuzah|yesno:"כן,לא" }}</td>
+                        <td class="p-0 text-center" style="width: 8%">{{ door.closer|yesno:"כן,לא" }}</td>
+                        <td class="p-0" style="width: 8%"> {{ door.quantity }}</td>
+                        <td class="p-0">{{ door.comment }}</td>
+                        <td class="p-0">
+                            <a href="{% url 'remove_door_instance' instance_id=door.id %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red"
+                                     class="bi bi-x-square" viewBox="0 0 16 16">
+                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
 
     {% endfor %}
     <form action="" method="post" class="">
         {% csrf_token %}
         <div class="row g-0">
-            <div class="col-2">{{ form.width.label }}{{ form.width }}</div>
-            <div class="col-2">{{ form.height.label }}{{ form.height }}</div>
-            <div class="col-2">{{ form.direction.label }}{{ form.direction }}</div>
+            <div class="col-1">{{ form.width.label }}{{ form.width }}</div>
+            <div class="col-1">{{ form.height.label }}{{ form.height }}</div>
+            <div class="col-2" style="width: 15%">{{ form.direction.label }}{{ form.direction }}</div>
+            <div class="col-1 p-1 m-1" style="width: 10%">
+                <div class="form-check form-check-reverse">
+                    {{ form.mezuzah.label }}{{ form.mezuzah }}
+                </div>
+                <div class="form-check form-check-reverse">
+                    {{ form.closer.label }}{{ form.closer }}
+                </div>
+            </div>
             <div class="col-1">{{ form.quantity.label }}{{ form.quantity }}</div>
             <div class="col-4">{{ form.comment.label }}{{ form.comment }}</div>
         </div>
@@ -134,6 +152,6 @@
     </div>
 {% endblock %}
 {% block script %}
-{% load static %}
-<script src="{% static 'js/filters.js' %}"></script>
+    {% load static %}
+    <script src="{% static 'js/filters.js' %}"></script>
 {% endblock %}
