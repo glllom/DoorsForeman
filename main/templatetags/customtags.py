@@ -25,4 +25,3 @@ def sub(value, arg):
 @register.filter
 def add(value, arg):
     return value + arg
-
