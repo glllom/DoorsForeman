@@ -35,7 +35,7 @@ class DoorType(models.Model):
                                                           validators=[MaxValueValidator(0)])
 
     binder_calculation = models.DecimalField(max_digits=4, decimal_places=1, help_text="הפחתה ברוחב",
-                                             verbose_name="הפחתה ברוחב:", null=False, default=0,
+                                             verbose_name="רוחבן:", null=False, default=0,
                                              validators=[MaxValueValidator(0)])
 
     def __str__(self):
@@ -73,6 +73,16 @@ class Accessories(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Covering(models.Model):
+    name = models.CharField(max_length=16, help_text="",
+                            verbose_name="", unique=True)
+    compatible_doors = models.ManyToManyField('DoorType', help_text="דלתות מתאימות",
+                                              verbose_name="סוגי דלתות תואמים:", blank=True)
+    image = models.ImageField(upload_to='images/door_types/', default='',
+                              help_text="תמונה מעטה", verbose_name="סקיצה:", blank=True,
+                              validators=[validate_image_file_extension])
 
 
 class Order(models.Model):

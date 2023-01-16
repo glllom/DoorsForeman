@@ -2,85 +2,98 @@
 {% block title %}סוגי דלתות{% endblock %}
 {% block form %}
     <form action="" method="post" enctype="multipart/form-data" class="card mx-2">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-7">
-                    <div class="row m-2">
-                        <div class="col-auto">{{ form.name.label }}</div>
-                        <div class="col-auto">{{ form.name }}</div>
-                        {{ form.name.errors }}
-                    </div>
-                    <div class="row m-2">
-                        <div class="col-auto">{{ form.height_calculation.label }}</div>
-                        <div class="col-auto" dir="ltr">{{ form.height_calculation }}</div>
-                        <div class="col-auto">{{ form.width_calculation.label }}</div>
-                        <div class="col-auto" dir="ltr">{{ form.width_calculation }}</div>
-                    </div>
-                    {{ form.height_calculation.errors }}{{ form.width_calculation.errors }}
-                    {% for error in form.height_calculation.errors %}
-                    {% endfor %}
-                    <div class="row m-2">
-                        <div class="col-auto">{{ form.image.label }}</div>
-                        <div class="col-auto">{{ form.image }}</div>
-                        {{ form.image.errors }}
-                    </div>
-                    <div class="row m-2">
-                        <button type="submit" class="col-auto btn btn-outline-success">לשמור</button>
-                    </div>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-9">
+                <div class="row m-2">
+                    <div class="col-auto">{{ form.name.label }}</div>
+                    <div class="col-auto">{{ form.name }}</div>
+                    {{ form.name.errors }}
                 </div>
-                <div class="col-4">
-                    <img src="#" alt="" id="preview"
-                         class="" style="max-height: 250px; max-width: 150px;">
+                <div class="row m-2">
+                    <div class="col-auto">{{ form.height_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.height_calculation }}</div>
+                    <div class="col-auto">{{ form.width_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.width_calculation }}</div>
+                    <div class="col-auto">{{ form.binder_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.binder_calculation }}</div>
+                </div>
+                <p class="border-bottom mt-1">sdfsfsdf</p>
+                <div class="row m-2">
+                    <div class="col-auto">{{ form.covering_out_height_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.covering_out_height_calculation }}</div>
+                    <div class="col-auto">{{ form.covering_out_width_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.covering_out_width_calculation }}</div>
+                </div>
+                <div class="row m-2">
+                    <div class="col-auto">{{ form.covering_into_height_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.covering_into_height_calculation }}</div>
+                    <div class="col-auto">{{ form.covering_into_width_calculation.label }}</div>
+                    <div class="col-auto" dir="ltr">{{ form.covering_into_width_calculation }}</div>
+                </div>
+                {{ form.height_calculation.errors }}{{ form.width_calculation.errors }}
+                <div class="row m-2">
+                    <div class="col-auto">{{ form.image.label }}</div>
+                    <div class="col-auto">{{ form.image }}</div>
+                    {{ form.image.errors }}
+                </div>
+                <div class="row m-2">
+                    <button type="submit" class="col-auto btn btn-outline-success">לשמור</button>
                 </div>
             </div>
-        </form>
-    {% endblock %}
+            <div class="col-2">
+                <img src="#" alt="" id="preview"
+                     class="" style="max-height: 250px; max-width: 150px;">
+            </div>
+        </div>
+    </form>
+{% endblock %}
 {% block filter_placeholder %}שם הדלת{% endblock %}
 
 {% block table %}
-        <div class="row border-bottom border-dark border-2">
-            <div class="col-2 pb-1 fw-bold lh-lg mx-1">שם הדלת</div>
-            <div class="col-2 pb-1 fw-bold lh-lg mx-1">תמונה</div>
-            <div class="w-25"></div>
-            <div class="w-25"></div>
+    <div class="row border-bottom border-dark border-2">
+        <div class="col-2 pb-1 fw-bold lh-lg mx-1">שם הדלת</div>
+        <div class="col-2 pb-1 fw-bold lh-lg mx-1">תמונה</div>
+        <div class="w-25"></div>
+        <div class="w-25"></div>
+    </div>
+    {% load static %}
+    {% for door in doors %}
+        <div>
+            <div data-bs-toggle="collapse"
+                 data-bs-target="#record_{{ door.id }}"
+                 aria-expanded="true" aria-controls="record_{{ door.id }}" style="z-index: -1;"
+                 class="row table-row border-top border-black-50 border-1 tr">
+                <div class="col-2 pb-1 fw-bold lh-lg m-1">{{ door.name }}</div>
+                <div class="col-2 pb-1 fw-bold lh-lg m-1">
+                    {% if door.image %}
+                        <img src="{{ door.image.url }}" class="img-fluid"
+                             alt="..."
+                             style="max-height: 200px; max-width: 150px">
+                    {% endif %}
+                </div>
+
+            </div>
+
         </div>
-        {% load static %}
-        {% for door in doors %}
-            <div>
-                <div data-bs-toggle="collapse"
-                     data-bs-target="#record_{{ door.id }}"
-                     aria-expanded="true" aria-controls="record_{{ door.id }}" style="z-index: -1;"
-                     class="row table-row border-top border-black-50 border-1 tr">
-                    <div class="col-2 pb-1 fw-bold lh-lg m-1">{{ door.name }}</div>
-                    <div class="col-2 pb-1 fw-bold lh-lg m-1">
-                        {% if door.image %}
-                            <img src="{{ door.image.url }}" class="img-fluid"
-                                 alt="..."
-                                 style="max-height: 200px; max-width: 150px">
-                        {% endif %}
-                    </div>
-
+        <div class="collapse container" id="record_{{ door.id }}">
+            <div class="d-flex">
+                <div class="">
+                    <a href="{% url 'doors' %}/{{ door.id }}" class="btn btn-outline-secondary m-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                        </svg>
+                        לשנות
+                    </a>
                 </div>
-
-            </div>
-            <div class="collapse container" id="record_{{ door.id }}">
-                <div class="d-flex">
-                    <div class="">
-                        <a href="{% url 'doors' %}/{{ door.id }}" class="btn btn-outline-secondary m-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
-                                <path fill-rule="evenodd"
-                                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
-                            </svg>
-                            לשנות
-                        </a>
-                    </div>
-                    <div class="">
-                        <a href="{% url 'door_type_remove' door_id=door.id %}"
-                           class="btn btn-outline-danger m-2">להסיר</a>
-                    </div>
+                <div class="">
+                    <a href="{% url 'door_type_remove' door_id=door.id %}"
+                       class="btn btn-outline-danger m-2">להסיר</a>
                 </div>
             </div>
-        {% endfor %}
+        </div>
+    {% endfor %}
 {% endblock %}

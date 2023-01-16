@@ -13,11 +13,14 @@ urlpatterns = [
     re_path(r'^doors/(?P<pk>\d+)/', main.views.DoorUpdate.as_view(), name='door_type_update'),
     re_path(r'^locks/(?P<pk>\d+)/', main.views.LockUpdate.as_view(), name='lock_update'),
     re_path(r'^hinges/(?P<pk>\d+)/', main.views.HingesUpdate.as_view(), name='hinges_update'),
+    re_path(r'^covering/(?P<pk>\d+)/', main.views.CoveringUpdate.as_view(), name='covering_update'),
     path('doors/remove/<door_id>', main.views.remove_door, name='door_type_remove'),
     path('lock/remove/<lock_id>', main.views.remove_lock, name='lock_remove'),
     path('hinge/remove/<hinge_id>', main.views.remove_hinge, name='hinge_remove'),
+    path('covering/remove/<covering_id>', main.views.remove_covering, name='covering_remove'),
     path('success', main.views.success, name='success'),
     path('locks', main.views.locks, name='locks'),
+    path('covering', main.views.covering, name='covering'),
     path('new_order', main.views.new_order, name='new_order'),
     re_path(r'^order/(?P<order_id>\d+)/', main.views.add_doors, name='add_doors'),
     re_path(r'^show_order/(?P<order_id>\d+)/', main.views.show_order, name='show_order'),
@@ -25,10 +28,12 @@ urlpatterns = [
     re_path(r'^search_order', main.views.search_order, name='search_order'),
     re_path(r'^add_door_group/(?P<order_id>\d+)/', main.views.add_door_group, name='add_door_group'),
 
-    re_path(r'^remove_door_instance/(?P<instance_id>\d+)/', main.views.remove_door_instance, name='remove_door_instance'),
+    re_path(r'^remove_door_instance/(?P<instance_id>\d+)/', main.views.remove_door_instance,
+            name='remove_door_instance'),
 
     path('ajax/load-locks', main.views.load_locks, name='ajax_load_locks'),
     path('ajax/load-hinges', main.views.load_hinges, name='ajax_load_hinges'),
+    path('ajax/load-covering', main.views.load_covering, name='ajax_load_covering'),
 ]
 
 if settings.DEBUG:

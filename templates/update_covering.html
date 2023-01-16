@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}פרטים של מעטה{% endblock %}
+{% block page %}
+    {% csrf_token %}
+    <form action="" method="post" enctype="multipart/form-data" class="card mx-2">
+        {% csrf_token %}
+        <div class="row m-2">
+            <div class="col-auto">{{ form.name.label }}</div>
+            <div class="col-auto">{{ form.name }}</div>
+            {{ form.name.errors }}
+        </div>
+        <div class="row m-2">
+            <div class="col-2">{{ form.compatible_doors.label }}</div>
+            <div class="col-4">{{ form.compatible_doors }}</div>
+        </div>
+        <div class="row m-2">
+            <a href="{% url 'covering' %}" class="btn btn-outline-secondary col-auto mx-2">לבטל שינויים</a>
+            <button type="submit" class="col-auto btn btn-outline-success">לשמור</button>
+        </div>
+    </form>
+{% endblock %}

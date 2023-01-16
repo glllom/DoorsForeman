@@ -19,5 +19,14 @@ $("#id_door_type").change(function () {
             $("#id_hinges").html(data);
         }
     });
+    $.ajax({                       // initialize an AJAX request
+        url: "/ajax/load-covering",                    // set the url of the request
+        data: {
+            'door_type': door_type_id       // add the country id to the GET parameters
+        },
+        success: function (data) {
+            $("#id_covering").html(data);
+        }
+    });
 });
 

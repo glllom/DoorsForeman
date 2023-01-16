@@ -104,6 +104,36 @@ def remove_hinge(request, hinge_id):
     return redirect('hinges')
 
 
+"""Covering"""
+
+
+def covering(request):
+    form = CoveringForm()
+    form_error = None
+    all_coverings = Covering.objects.all()
+    if request.method == 'POST':
+        form = CoveringForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            form_error = True
+    return render(request, 'covering.html', {'form': form,
+                                             'coverings': all_coverings,
+                                             'form_error': form_error})
+
+
+class CoveringUpdate(UpdateView):
+    model = Covering
+    form_class = CoveringForm
+    template_name = 'update_covering.html'
+    success_url = reverse_lazy('covering')
+
+
+def remove_covering(request, covering_id):
+    Covering.objects.filter(id=covering_id).delete()
+    return redirect('covering')
+
+
 '''Orders'''
 
 
@@ -259,3 +289,10 @@ def load_hinges(request):
     door_type = DoorType.objects.filter(id=door_type)[0]
     hinges_list = Hinge.objects.filter(compatible_doors=door_type)
     return render(request, 'hinges_dropdown_list_options.html', {'hinges': hinges_list})
+
+
+def load_covering(request):
+    door_type = request.GET.get('door_type')
+    door_type = DoorType.objects.filter(id=door_type)[0]
+    covering_list = Covering.objects.filter(compatible_doors=door_type)
+    return render(request, 'covering_dropdown_list_options.html', {'coverings': covering_list})
