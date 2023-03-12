@@ -8,6 +8,7 @@ import main.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main.views.index, name='home'),
+    path('test-label', main.views.test_label, name='test'),
     path('hinges', main.views.hinges, name='hinges'),
     path('doors', main.views.door_types, name='doors'),
     re_path(r'^doors/(?P<pk>\d+)/', main.views.DoorUpdate.as_view(), name='door_type_update'),
@@ -34,6 +35,9 @@ urlpatterns = [
     path('ajax/load-locks', main.views.load_locks, name='ajax_load_locks'),
     path('ajax/load-hinges', main.views.load_hinges, name='ajax_load_hinges'),
     path('ajax/load-covering', main.views.load_covering, name='ajax_load_covering'),
+
+    path('register', main.views.RegisterUser.as_view(), name='register'),
+    path('login', main.views.LoginUser.as_view(), name='login'),
 ]
 
 if settings.DEBUG:

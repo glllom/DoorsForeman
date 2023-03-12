@@ -1,4 +1,8 @@
-from django.forms import ModelForm, TextInput, ClearableFileInput, SelectMultiple, Select, Textarea, CheckboxInput
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.forms import ModelForm, TextInput, ClearableFileInput, SelectMultiple, Select, Textarea, CheckboxInput, \
+    CharField, PasswordInput
 
 from main.models import *
 
@@ -114,3 +118,16 @@ class DoorInstanceForm(ModelForm):
                    'mezuzah': CheckboxInput(attrs={'class': 'form-check-input px-1', 'role': "switch"}),
                    'closer': CheckboxInput(attrs={'class': 'form-check-input px-1', 'role': "switch"}),
                    }
+
+
+"""Users"""
+
+
+class RegisterUserForm(UserCreationForm):
+    username = CharField(label="Name", widget=TextInput(attrs={'class': 'form-control'}), )
+    password1 = CharField(label="Pass", widget=PasswordInput(attrs={'class': 'form-control'}), )
+    password2 = CharField(label="Pass2", widget=PasswordInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']

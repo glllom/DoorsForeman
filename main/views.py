@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from main.forms import *
 from main.models import *
 from main.calculator import *
@@ -14,6 +14,19 @@ def index(request):
 def success(request):
     """temp"""
     return HttpResponse('success')
+
+
+def test_label(request):
+    from blabel import LabelWriter
+
+    label_writer = LabelWriter("item_template.html",
+                               default_stylesheets=("style.css",))
+    records = [
+        dict(sample_id="s01", sample_name="Sample 1"),
+        dict(sample_id="s02", sample_name="Sample 2")
+    ]
+
+    label_writer.write_labels(records, target='qrcode_and_label.pdf')
 
 
 """ Door Types """
@@ -296,3 +309,25 @@ def load_covering(request):
     door_type = DoorType.objects.filter(id=door_type)[0]
     covering_list = Covering.objects.filter(compatible_doors=door_type)
     return render(request, 'covering_dropdown_list_options.html', {'coverings': covering_list})
+
+
+"""User"""
+
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # c_def = self.get_u
+        return dict(list(context.items()))
+
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('home')
